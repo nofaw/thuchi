@@ -8,6 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://apple.com/favicon.ico">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://apple.com/favicon.ico">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://apple.com/favicon.ico">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://apple.com/favicon.ico">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -523,7 +529,7 @@
             }
         }
 
-         // Function to edit entry
+        // Function to edit entry
         function editEntry(date, index) {
             let entryToEdit = (filteredEntries || getTodayEntries())[index];
 
@@ -554,8 +560,10 @@
             document.getElementById('note').value = entryToEdit.note;
 
             entryForm.querySelector('button[type="submit"]').textContent = "Cập nhật";
-        }
 
+            // Scroll to the form
+            entryForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         // Function to filter entries
         function filterEntries() {
