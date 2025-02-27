@@ -379,6 +379,7 @@
 
         // Thêm logic để ẩn/hiện các nút dựa trên trạng thái đăng nhập
 function updateSigninStatus(isSignedIn) {
+    console.log("updateSigninStatus được gọi, isSignedIn =", isSignedIn);
     if (isSignedIn) {
         console.log('Đã đăng nhập');
         document.getElementById('authButton').style.display = 'none';
@@ -386,25 +387,24 @@ function updateSigninStatus(isSignedIn) {
         document.getElementById('backupButton').style.display = 'inline-block';
         document.getElementById('restoreButton').style.display = 'inline-block';
 
-        // Chờ cho gapi.client được tải trước khi lấy thông tin người dùng
         gapi.client.load('oauth2', 'v2', function() {
             var user = gapi.auth2.getAuthInstance().currentUser.get();
             var profile = user.getBasicProfile();
             var email = profile.getEmail();
             document.getElementById('userEmail').textContent = "Đã đăng nhập với: " + email;
+
+            // Gọi hàm restoreFromDrive sau khi đăng nhập thành công
+            restoreFromDrive();
         });
-
-
     } else {
         console.log('Chưa đăng nhập');
         document.getElementById('authButton').style.display = 'inline-block';
         document.getElementById('signoutButton').style.display = 'none';
         document.getElementById('backupButton').style.display = 'none';
         document.getElementById('restoreButton').style.display = 'none';
-        document.getElementById('userEmail').textContent = ""; // Xóa thông tin email khi đăng xuất
+        document.getElementById('userEmail').textContent = "";
     }
 }
-
 
         const entryForm = document.getElementById('entryForm');
         const entryTable = document.getElementById('entryTable').getElementsByTagName('tbody')[0];
