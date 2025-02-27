@@ -37,6 +37,26 @@
             margin-bottom: 20px;
         }
 
+        /* Style cho nút đăng nhập/đăng xuất */
+        #authButtons {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #authButtons button {
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #authButtons button:hover {
+            background-color: #357ae8;
+        }
+
         form {
             margin-bottom: 20px;
         }
@@ -213,12 +233,32 @@
             font-size: 1.1em;
             font-weight: bold;
         }
+
+        /* Style cho thông tin người dùng */
+        #userInfo {
+            text-align: center;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
+        <!-- Khu vực hiển thị nút đăng nhập và thông tin người dùng -->
+        <div id="authButtons">
+            <button id="authButton" onclick="handleAuthClick()">Đăng nhập Google</button>
+            <button id="signoutButton" onclick="handleSignoutClick()" style="display:none;">Đăng xuất</button>
+            <button id="backupButton" onclick="uploadToDrive()" style="display:none;">Sao lưu lên Google Drive</button>
+            <button id="restoreButton" onclick="restoreFromDrive()" style="display:none;">Phục hồi từ Google Drive</button>
+        </div>
+
+        <div id="userInfo">
+            <!-- Thông tin email Google sẽ được hiển thị ở đây -->
+            <span id="userEmail"></span>
+        </div>
+
         <h1>Quản lý Thu Chi Cá Nhân</h1>
 
         <div id="currentDateDisplay">
@@ -333,11 +373,6 @@
         <div id="notification"></div>
     </div>
 
-    <button id="authButton" onclick="handleAuthClick()">Đăng nhập Google</button>
-    <button id="signoutButton" onclick="handleSignoutClick()" style="display:none;">Đăng xuất</button>
-    <button id="backupButton" onclick="uploadToDrive()" style="display:none;">Sao lưu lên Google Drive</button>
-    <button id="restoreButton" onclick="restoreFromDrive()" style="display:none;">Phục hồi từ Google Drive</button>
-
     <script>
         // Gọi handleClientLoad khi trang được tải
         window.onload = handleClientLoad;
@@ -349,11 +384,17 @@
                 document.getElementById('signoutButton').style.display = 'inline-block';
                 document.getElementById('backupButton').style.display = 'inline-block';
                 document.getElementById('restoreButton').style.display = 'inline-block';
+
+                // Hiển thị email người dùng
+                var user = gapi.auth2.getAuthInstance().currentUser.get();
+                var email = user.getBasicProfile().getEmail();
+                document.getElementById('userEmail').textContent = "Đã đăng nhập với: " + email;
             } else {
                 document.getElementById('authButton').style.display = 'inline-block';
                 document.getElementById('signoutButton').style.display = 'none';
                 document.getElementById('backupButton').style.display = 'none';
                 document.getElementById('restoreButton').style.display = 'none';
+                document.getElementById('userEmail').textContent = ""; // Xóa thông tin email khi đăng xuất
             }
         }
 
@@ -717,22 +758,6 @@
                 console.log(error);
                 showNotification('Lỗi khởi tạo Google API!');
             });
-        }
-
-        function updateSigninStatus(isSignedIn) {
-            if (isSignedIn) {
-                console.log('Đã đăng nhập');
-                document.getElementById('authButton').style.display = 'none';
-                document.getElementById('signoutButton').style.display = 'inline-block';
-                document.getElementById('backupButton').style.display = 'inline-block';
-                document.getElementById('restoreButton').style.display = 'inline-block';
-            } else {
-                console.log('Chưa đăng nhập');
-                document.getElementById('authButton').style.display = 'inline-block';
-                document.getElementById('signoutButton').style.display = 'none';
-                document.getElementById('backupButton').style.display = 'none';
-                document.getElementById('restoreButton').style.display = 'none';
-            }
         }
 
         function handleAuthClick() {
