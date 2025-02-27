@@ -662,13 +662,11 @@
         }
 
         // Function to check if the last display date is today, and filter if not
-        function filterOldEntriesIfNeeded() {
+         function filterOldEntriesIfNeeded() {
             const lastDisplayDate = localStorage.getItem('lastDisplayDate');
             const todayDate = getTodayDate();
 
             if (lastDisplayDate !== todayDate) {
-                entries = entries.filter(entry => entry.date === todayDate);
-                saveEntries(); // Save the filtered entries
                 localStorage.setItem('lastDisplayDate', todayDate);
             }
         }
